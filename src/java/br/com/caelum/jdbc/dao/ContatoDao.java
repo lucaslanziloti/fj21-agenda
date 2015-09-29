@@ -18,12 +18,11 @@ public class ContatoDao {
 
     private Connection connection;
 
-    public ContatoDao() {
-        this.connection = new ConnectionFactory().getConnection();
+    public ContatoDao(Connection connection) {
+        this.connection = connection;
     }
 
     public void adiciona(Contato contato) {
-
         String sql = "insert into contatos "
                 + "(nome,email,endereco,dataNascimento)"
                 + " values (?,?,?,?)";
@@ -36,6 +35,22 @@ public class ContatoDao {
             stmt.setString(2, contato.getEmail());
             stmt.setString(3, contato.getEndereco());
             stmt.setDate(4, new Date(contato.getDataNascimento().getTimeInMillis()));
+            // executa
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void exclui(Contato contato) {
+        String sql = "delete from contatos where id = ?";
+
+        try {
+            // prepared statement para inserção
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            // seta os valores
+            stmt.setLong(1, contato.getId());
             // executa
             stmt.execute();
             stmt.close();

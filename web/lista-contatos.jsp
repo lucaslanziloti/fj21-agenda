@@ -8,7 +8,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <jsp:useBean id="dao" class="br.com.caelum.jdbc.dao.ContatoDao"/>
         <c:import url="cabecalho.jsp" />
 
         <table>
@@ -19,7 +18,7 @@
                 <th>Data Nascimento</th>
             </tr>
             <!-- percorre contatos montando as linhas da tabela -->
-            <c:forEach var="contato" items="${dao.lista}" varStatus="i">
+            <c:forEach var="contato" items="${contatos}" varStatus="i">
                 <tr>
                     <td>${contato.nome}</td> 
                     <td>
@@ -28,7 +27,12 @@
                         </c:if>
                     </td>
                     <td>${contato.endereco}</td>
-                    <td><fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy"/></td>
+                    <td>
+                        <fmt:formatDate value="${contato.dataNascimento.time}" pattern="dd/MM/yyyy"/>
+                    </td>
+                    <td>
+                        <a href="mvc?logica=RemoveContatoLogic&id=${contato.id}">Remover</a>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
